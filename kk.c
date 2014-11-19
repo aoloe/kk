@@ -1384,7 +1384,6 @@ int main(int argc, char *argv[]) {
                 continue;
             }
         }
-        // TODO: if not found we might want to check for char2 char1
         // TODO: make sure that argv[i] is two chars (is it needed?)
         char char1 = argv[i][0];
         char char2 = argv[i][1];

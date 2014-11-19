@@ -9,13 +9,10 @@
 
 #define NUL '\0'
 
-typedef wchar_t result_T;
-// typedef wint_t result_T;
-
 typedef struct digraph {
     unsigned char char1;
     unsigned char char2;
-    result_T result;
+    wchar_t result;
     char *description;
 } digr_T;
 
@@ -1365,13 +1362,13 @@ static digr_T digraph[] = {
 };
 
 int main(int argc, char *argv[]) {
-    int i;
     bool optionparsed = false;
 
+    // TODO: get/"import" the current locale?
     setlocale(LC_ALL, "en_US.utf8");
 
     digr_T *dp;
-    for(i = 1; i < argc; i++) {
+    for(int i = 1; i < argc; i++) {
         if (!optionparsed) {
             if (!strcmp(argv[i], "-v")) { /* prints version information */
                 puts("kk-"VERSION", © 2014 kk engineers, see LICENSE for details");
@@ -1387,9 +1384,9 @@ int main(int argc, char *argv[]) {
         char char1 = argv[i][0];
         char char2 = argv[i][1];
         dp = digraph;
-        for (i = 0; dp->char1 != 0; ++i)
+        for (int j = 0; dp->char1 != 0; ++i)
         {
-            if ((int)dp->char1 == char1 && (int)dp->char2 == char2)
+            if (dp->char1 == char1 && dp->char2 == char2)
             {
                 putwchar(dp->result);
                 exit(EXIT_SUCCESS);
@@ -1397,6 +1394,6 @@ int main(int argc, char *argv[]) {
             ++dp;
         }
     }
-    fputs("usage: kk [-v] [--] [digraph]", stderr);
+    fputs("usage: kk [-v] [--] [digraph]\n", stderr);
     exit(EXIT_FAILURE);
 }

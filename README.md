@@ -14,3 +14,4 @@ Implements vim's digraphs as a standalone tool
 - check for the inverted digraph if the digraph is not found ("/o" -> "o/")
 - check how to allow digraphs that have a sepcial meaning on the command line (--, >>, <<, ...)
 - if used from a terminal, add a return at the end (but not if it's used in a pipe)
+- check st for utf8 handling. or libutf?

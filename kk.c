@@ -6,8 +6,6 @@
 
 #include <locale.h>
 
-// #define VERSION "1.0"
-
 #define NUL '\0'
 
 typedef struct digraph {
@@ -19,8 +17,6 @@ typedef struct digraph {
 
 // taken from https://tools.ietf.org/html/rfc1345
 static digr_T digraph[] = {
-    // {'o', '/', 248} // ø
-    // {'o', '/', 0xF8, "EXCLAMATION MARK"} // ø
     {'S', 'P', 0x0020, "SPACE"},
     {'N', 'b', 0x0023, "NUMBER SIGN"},
     {'D', 'O', 0x0024, "DOLLAR SIGN"},
@@ -1356,10 +1352,6 @@ static digr_T digraph[] = {
     {'!', '*', 0xe026, "GREEK VARIA (ISO-10646-1DIS 032/032/042/164)"},
     {'J', '<', 0xe028, "LATIN CAPITAL LETTER J WITH CARON (lowercase: 000/000/001/240)"},
     {NUL, NUL, NUL}
-
-/*
-*/
-
 };
 
 int main(int argc, char *argv[]) {
@@ -1374,22 +1366,13 @@ int main(int argc, char *argv[]) {
         p = getenv("LANG");
     }
 
-    /*
-    if (p) {
-        fputs(p, stderr);
-    }
-    */
-
-
-
-    // TODO: get/"import" the current locale?
+    // TODO: is there a better way to import / set the locale?
     if (p) {
         setlocale(LC_ALL, p);
     } else {
         setlocale(LC_ALL, "en_US.utf8");
     }
 
-    digr_T *dp;
     for(int i = 1; i < argc; i++) {
         if (!optionparsed) {
             if (!strcmp(argv[i], "-v")) { /* prints version information */
@@ -1402,7 +1385,6 @@ int main(int argc, char *argv[]) {
             }
         }
         // TODO: if not found we might want to check for char2 char1
-        // ¥@た×[
         // TODO: make sure that argv[i] is two chars (is it needed?)
         char char1 = argv[i][0];
         char char2 = argv[i][1];

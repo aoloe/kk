@@ -1,11 +1,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <wchar.h>
 
 #include <locale.h>
 
-#define VERSION "1.0"
+// #define VERSION "1.0"
 
 #define NUL '\0'
 
@@ -1364,8 +1365,29 @@ static digr_T digraph[] = {
 int main(int argc, char *argv[]) {
     bool optionparsed = false;
 
+    char  *p;
+    p = getenv("LC_ALL");
+    if (!p) {
+        p = getenv("LC_CTYPE");
+    }
+    if (!p) {
+        p = getenv("LANG");
+    }
+
+    /*
+    if (p) {
+        fputs(p, stderr);
+    }
+    */
+
+
+
     // TODO: get/"import" the current locale?
-    setlocale(LC_ALL, "en_US.utf8");
+    if (p) {
+        setlocale(LC_ALL, p);
+    } else {
+        setlocale(LC_ALL, "en_US.utf8");
+    }
 
     digr_T *dp;
     for(int i = 1; i < argc; i++) {
@@ -1381,17 +1403,23 @@ int main(int argc, char *argv[]) {
         }
         // TODO: if not found we might want to check for char2 char1
         // ¥@た×[
+        // TODO: make sure that argv[i] is two chars (is it needed?)
         char char1 = argv[i][0];
         char char2 = argv[i][1];
-        dp = digraph;
-        for (int j = 0; dp->char1 != 0; ++i)
-        {
-            if (dp->char1 == char1 && dp->char2 == char2)
-            {
+        wchar_t result_inverted = NUL;
+        for (digr_T *dp = digraph; dp->char1; dp++) {
+            if (dp->char1 == char1 && dp->char2 == char2) {
                 putwchar(dp->result);
+                // TODO: remove/move exit() out of the for loop to allow multiple digraphs?
                 exit(EXIT_SUCCESS);
+            } else if (dp->char1 == char2 && dp->char2 == char1) {
+                result_inverted = dp->result;
             }
-            ++dp;
+            // TODO: if multiple output are allowed, this won't work as is
+        }
+        if (result_inverted) {
+            putwchar(result_inverted);
+            exit(EXIT_SUCCESS);
         }
     }
     fputs("usage: kk [-v] [--] [digraph]\n", stderr);

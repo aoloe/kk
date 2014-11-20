@@ -10,6 +10,16 @@ If your digraph has a special meaning, just put it between quotes:
     $ ./kk '>>'
     $ »
 
+With `xclip` you can create a small script that puts the digraph into the x clipboard:
+
+    $ ./kk o/ | xclip
+    $ xclip -o
+    $ »
+
+If you want to have it in the "real" clipboard
+
+    $ ./kk o/ | xclip -selection clipboard
+
 ## Todo
 
 - show the list of available digraphs.
@@ -20,7 +30,8 @@ If your digraph has a special meaning, just put it between quotes:
 
 ## Notes
 
-some notes on hiltjo for https://github.com/mutantturkey/fsbm/ that could be relevant for me too:
+some notes from hiltjo for https://github.com/mutantturkey/fsbm/ that could be relevant for me too:
+
 
 - Use the great arg.h from 20h:
 http://git.suckless.org/sbase/tree/arg.h instead of getopt.
